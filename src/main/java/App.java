@@ -21,7 +21,7 @@ public class App {
         }
     }
 
-    private static void processSequencies(Scanner fileReader, ArrayList<String> geneList) {
+    public static void processSequencies(Scanner fileReader, ArrayList<String> geneList) {
         ArrayList<String> currentGene = new ArrayList<>();
         String currentLine, first, second, third, currentCodon, unfinishedCodon;
 
@@ -79,11 +79,11 @@ public class App {
         }
     }
 
-    private static boolean isStopCodon(String codon) {
+    public static boolean isStopCodon(String codon) {
         return (codon.equals("UAG") || codon.equals("UGA") || codon.equals("UAA"));
     }
 
-    private static boolean isNucleotide(String nucleotide) {
+    public static boolean isNucleotide(String nucleotide) {
         return (nucleotide.equals("A") || nucleotide.equals("U") || nucleotide.equals("G") || nucleotide.equals("C"));
     }
 }
