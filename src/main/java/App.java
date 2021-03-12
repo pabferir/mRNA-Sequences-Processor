@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,7 +35,8 @@ public class App {
         }
         try {
             FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
-            fileWriter.write(geneList.toString());
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            fileWriter.write(gson.toJson(geneList));
             fileWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
