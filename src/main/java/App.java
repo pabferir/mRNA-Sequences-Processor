@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,10 +14,29 @@ public class App {
             Scanner fileReader = new Scanner(refmRNA);
 
             processSequencies(fileReader, geneList);
-            System.out.println(geneList.toString());
 
         } catch(IOException e) {
             System.out.println("Unable to load file form path: ./res/refMrna.fa.corrected.txt");
+            e.printStackTrace();
+        }
+        try {
+            File output = new File("./res/geneProc-output.txt");
+            if (output.createNewFile()) {
+                System.out.println("File created: " + output.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("Could not create output file.");
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
+            fileWriter.write(geneList.toString());
+            fileWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("Could not write to output file.");
             e.printStackTrace();
         }
     }
