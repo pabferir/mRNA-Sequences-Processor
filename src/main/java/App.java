@@ -77,7 +77,7 @@ public class App {
                             }
                         } else {
                             //Not a valid codon
-                            System.out.println("Invalid codon " + currentCodon + " detected.");
+                            //System.out.println("Invalid codon " + currentCodon + " detected.");
                         }
                         //Clear current codon
                         currentCodon = first = second = third = "";
@@ -96,7 +96,7 @@ public class App {
                     }
                 } else {
                     //Not a valid nucleotide
-                    System.out.println("Invalid nucleotide " + first + " detected.");
+                    //System.out.println("Invalid nucleotide " + first + " detected.");
                 }
 
             }
