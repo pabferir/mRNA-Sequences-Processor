@@ -15,7 +15,7 @@ Java is the programming language I am most experienced with and therefore the on
 ### Why Gradle?
 <img src="doc/gradle-logo.png" height="125px"/>
 
-[About 48% of Java developers use Gradle](https://www.jetbrains.com/lp/devecosystem-2020/java/). Gradle is faster and in 
+[About 48% of Java developers use Gradle](https://www.jetbrains.com/lp/devecosystem-2020/java/). Gradle is faster and in
 my opinion provides a better and easier experience than Maven, which makes it a good option for this challenge.
 
 ## Prerequisites
