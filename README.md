@@ -9,11 +9,11 @@ detailed explanation on the challenge [can be found here]((doc/ADCenter_Network_
 This solution is written in Java and uses Gradle for build automation.
 
 ### Why Java?
-![Java logo](doc/java-logo.png)
+![Java logo](doc/java-logo.png =250x)
 Java is the programming language I am most experienced with and therefore the one with which I feel most comfortable.
 
 ### Why Gradle?
-![Gradle logo](doc/gradle-logo.png)
+![Gradle logo](doc/gradle-logo.png =225x)
 [About 48% of Java developers use Gradle](https://www.jetbrains.com/lp/devecosystem-2020/java/). Gradle is faster and in 
 my opinion provides a better and easier experience than Maven, which makes it a good option for this challenge.
 
