@@ -35,10 +35,9 @@ To run the tests, use the command:
 ### Run with String input
 To run the program specifying a String input from command line, use the command:
 ```
-> gradle run --args="-s your_string_input"
+> gradle run --args="your string input"
 ```
-> Note you should replace `your_string_input` with the desired input String (e.g. `'aucguacgugac >NM_001170833 1
-auggccuuucgcuccuua'`) and within single quotation marks should you introduce any space in between.
+> Note you should replace `your string input` with the desired input (e.g. `aucguacgugac > NM_001170833 1 auggccuuucgcuag`).
 
 ### Run with file input
 To run the program with an input file, place the file in the `res/` directory and use the command:
