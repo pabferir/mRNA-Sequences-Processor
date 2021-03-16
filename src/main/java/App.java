@@ -16,17 +16,49 @@ public class App {
             case "-f":
                 runWithInputFile(args[1]);
                 break;
-            case "-s":
-                runWithInputString(args[1]);
+            default:
+                runWithInputString(args);
                 break;
+        }
+        generateOutputFile();
+    }
+
+    private static void generateOutputFile() {
+        try {
+            File output = new File("./res/geneProc-output.txt");
+            if (output.createNewFile()) {
+                System.out.println("Output file created: " + output.getName());
+            } else {
+                System.out.println("Output file already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("Could not create output file.");
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            if(geneList.isEmpty()) {
+                System.out.println("\n" +
+                        "*** WARNING *************************************************************\n" +
+                        "* No complete genes detected.                                           *\n" +
+                        "* Make sure your input provided an actual gene ended with a stop codon. *\n" +
+                        "*************************************************************************\n");
+            }
+            fileWriter.write(gson.toJson(geneList));
+            fileWriter.close();
+            System.out.println("Successfully wrote to output file.");
+        } catch (IOException e) {
+            System.out.println("Could not write to output file.");
+            e.printStackTrace();
         }
     }
 
-    public static void runWithInputString(String inputContent) {
+    public static void runWithInputString(String[] inputContent) {
         try {
             File input = new File("./res/geneProc-input.txt");
             if (input.createNewFile()) {
-                System.out.println("Input file created: " + input.getName());
+                System.out.println("Input file " + input.getName() + " created with provided input String.");
             } else {
                 System.out.println("Input file already exists.");
             }
@@ -36,7 +68,7 @@ public class App {
         }
         try {
             FileWriter fileWriter = new FileWriter("./res/geneProc-input.txt");
-            fileWriter.write(inputContent);
+            for(int i=0; i<inputContent.length; i++) fileWriter.write(inputContent[i]);
             fileWriter.close();
             System.out.println("Successfully wrote to input file.");
         } catch (IOException e) {
@@ -50,28 +82,7 @@ public class App {
             processSequencies(fileReader, geneList);
 
         } catch(IOException e) {
-            System.out.println("Unable to load file form path: ./res/geneProc-input.txt");
-            e.printStackTrace();
-        }
-        try {
-            File output = new File("./res/geneProc-output.txt");
-            if (output.createNewFile()) {
-                System.out.println("File created: " + output.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("Could not create output file.");
-            e.printStackTrace();
-        }
-        try {
-            FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            fileWriter.write(gson.toJson(geneList));
-            fileWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("Could not write to output file.");
+            System.out.println("Unable to load input file form path: ./res/geneProc-input.txt");
             e.printStackTrace();
         }
     }
@@ -84,33 +95,14 @@ public class App {
             processSequencies(fileReader, geneList);
 
         } catch(IOException e) {
-            System.out.println("Unable to load file form path: " + pathToFile);
-            e.printStackTrace();
-        }
-        try {
-            File output = new File("./res/geneProc-output.txt");
-            if (output.createNewFile()) {
-                System.out.println("File created: " + output.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("Could not create output file.");
-            e.printStackTrace();
-        }
-        try {
-            FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            fileWriter.write(gson.toJson(geneList));
-            fileWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("Could not write to output file.");
+            System.out.println("Unable to load input file form path: " + pathToFile);
             e.printStackTrace();
         }
     }
 
     public static void processSequencies(Scanner fileReader, ArrayList<String> geneList) {
+        System.out.println("\n=== Processing mRNA sequences... =====\n");
+
         ArrayList<String> currentGene = new ArrayList<>();
         String currentLine, first, second, third, currentCodon, unfinishedCodon;
 
@@ -142,7 +134,7 @@ public class App {
                             }
                         } else {
                             //Not a valid codon
-                            System.out.println("Invalid codon " + currentCodon + " detected.");
+                            System.out.println(" > Invalid codon " + currentCodon + " detected.");
                         }
                         //Clear current codon
                         currentCodon = first = second = third = "";
@@ -161,11 +153,13 @@ public class App {
                     }
                 } else {
                     //Not a valid nucleotide
-                    System.out.println("Invalid nucleotide " + first + " detected.");
+                    System.out.println(" > Invalid nucleotide " + first + " detected.");
                 }
 
             }
         }
+
+        System.out.println("\n=== Processing completed =============\n");
     }
 
     public static boolean isStopCodon(String codon) {
