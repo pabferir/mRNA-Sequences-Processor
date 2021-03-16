@@ -32,7 +32,7 @@ To run the tests, use the command:
 > gradle test
 ```
 
-###Run with String input
+### Run with String input
 To run the program specifying a String input from command line, use the command:
 ```
 > gradle run --args="-s your_string_input"
@@ -40,7 +40,7 @@ To run the program specifying a String input from command line, use the command:
 > Note you should replace `your_string_input` with the desired input String (e.g. `'aucguacgugac >NM_001170833 1
 auggccuuucgcuccuua'`) and within single quotation marks should you introduce any space in between.
 
-###Run with file input
+### Run with file input
 To run the program with an input file, place the file in the `res/` directory and use the command:
 ```
 > gradle run --args="-f ./res/name_of_the_file.ext"
