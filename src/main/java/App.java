@@ -8,18 +8,83 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
+
+    private static ArrayList<String> geneList = new ArrayList<>();
+
     public static void main(String[] args) {
+        switch(args[0]) {
+            case "-f":
+                runWithInputFile(args[1]);
+                break;
+            case "-s":
+                runWithInputString(args[1]);
+                break;
+        }
+    }
 
-        ArrayList<String> geneList = new ArrayList<>();
-
+    public static void runWithInputString(String inputContent) {
         try {
-            File refmRNA = new File("./res/refMrna.fa.corrected.txt");
+            File input = new File("./res/geneProc-input.txt");
+            if (input.createNewFile()) {
+                System.out.println("Input file created: " + input.getName());
+            } else {
+                System.out.println("Input file already exists.");
+            }
+        } catch(IOException e) {
+            System.out.println("Could not create input file.");
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("./res/geneProc-input.txt");
+            fileWriter.write(inputContent);
+            fileWriter.close();
+            System.out.println("Successfully wrote to input file.");
+        } catch (IOException e) {
+            System.out.println("Could not write to input file.");
+            e.printStackTrace();
+        }
+        try {
+            File refmRNA = new File("./res/geneProc-input.txt");
             Scanner fileReader = new Scanner(refmRNA);
 
             processSequencies(fileReader, geneList);
 
         } catch(IOException e) {
-            System.out.println("Unable to load file form path: ./res/refMrna.fa.corrected.txt");
+            System.out.println("Unable to load file form path: ./res/geneProc-input.txt");
+            e.printStackTrace();
+        }
+        try {
+            File output = new File("./res/geneProc-output.txt");
+            if (output.createNewFile()) {
+                System.out.println("File created: " + output.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("Could not create output file.");
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            fileWriter.write(gson.toJson(geneList));
+            fileWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("Could not write to output file.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void runWithInputFile(String pathToFile) {
+        try {
+            File refmRNA = new File(pathToFile);
+            Scanner fileReader = new Scanner(refmRNA);
+
+            processSequencies(fileReader, geneList);
+
+        } catch(IOException e) {
+            System.out.println("Unable to load file form path: " + pathToFile);
             e.printStackTrace();
         }
         try {
