@@ -31,13 +31,23 @@ To run the tests, use the command:
 ```
 > gradle test
 ```
-To run the program, use the command:
+
+###Run with String input
+To run the program specifying a String input from command line, use the command:
 ```
-> gradle run
+> gradle run --args="-s your_string_input"
+```
+> Note you should replace `your_string_input` with the desired input String (e.g. `'aucguacgugac >NM_001170833 1
+auggccuuucgcuccuua'`) and within single quotation marks should you introduce any space in between.
+
+###Run with file input
+To run the program with an input file, place the file in the `res/` directory and use the command:
+```
+> gradle run --args="-f ./res/name_of_the_file.ext"
 ```
 
 ### Output
-Once you run the program, you will find the results in the `geneProc-output.txt` file generated within the `res/` directory.
+Once you run the program either with String or file input, you will find the results in the `geneProc-output.txt` file generated within the `res/` directory.
 
 ## License
 
