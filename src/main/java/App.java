@@ -38,16 +38,17 @@ public class App {
         try {
             FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            fileWriter.write(gson.toJson(geneList));
+            fileWriter.close();
             if(geneList.isEmpty()) {
                 System.out.println("\n" +
                         "*** WARNING *************************************************************\n" +
                         "* No complete genes detected.                                           *\n" +
                         "* Make sure your input provided an actual gene ended with a stop codon. *\n" +
                         "*************************************************************************\n");
+            } else {
+                System.out.println("Successfully wrote to output file.");
             }
-            fileWriter.write(gson.toJson(geneList));
-            fileWriter.close();
-            System.out.println("Successfully wrote to output file.");
         } catch (IOException e) {
             System.out.println("Could not write to output file.");
             e.printStackTrace();
@@ -55,12 +56,13 @@ public class App {
     }
 
     public static void runWithInputString(String[] inputContent) {
+        System.out.println("Creating input file with provided data...");
         try {
             File input = new File("./res/geneProc-input.txt");
             if (input.createNewFile()) {
-                System.out.println("Input file " + input.getName() + " created with provided input String.");
+                System.out.println("Input file " + input.getName() + " created with provided data.");
             } else {
-                System.out.println("Input file already exists.");
+                System.out.println("Input file " + input.getName() + " already exists.");
             }
         } catch(IOException e) {
             System.out.println("Could not create input file.");
@@ -70,9 +72,9 @@ public class App {
             FileWriter fileWriter = new FileWriter("./res/geneProc-input.txt");
             for(int i=0; i<inputContent.length; i++) fileWriter.write(inputContent[i]);
             fileWriter.close();
-            System.out.println("Successfully wrote to input file.");
+            System.out.println("Successfully wrote data to input file.");
         } catch (IOException e) {
-            System.out.println("Could not write to input file.");
+            System.out.println("Could not write data to input file.");
             e.printStackTrace();
         }
         try {
