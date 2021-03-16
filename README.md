@@ -32,12 +32,12 @@ To run the tests, use the command:
 > gradle test
 ```
 
-### Run with String input
-To run the program specifying a String input from command line, use the command:
+### Run with command line input
+To run the program specifying an input from command line, use the command:
 ```
-> gradle run --args="your string input"
+> gradle run --args="your input"
 ```
-> Note you should replace `your string input` with the desired input (e.g. `aucguacgugac > NM_001170833 1 auggccuuucgcuag`).
+> Note you should replace `your input` with the desired data sequence (e.g. `aucguacgugac > NM_001170833 1 auggccuuucgcuag`).
 
 ### Run with file input
 To run the program with an input file, place the file in the `res/` directory and use the command:
