@@ -44,6 +44,7 @@ To run the program with an input file, place the file in the `res/` directory an
 ```
 > gradle run --args="-f ./res/name_of_the_file.ext"
 ```
+> A sample input file named `refMrna.fa.corrected.txt` is already provided in the `res/` directory.
 
 ### Output
 Once you run the program either with String or file input, you will find the results in the `geneProc-output.txt` file generated within the `res/` directory.
