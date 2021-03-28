@@ -1,3 +1,5 @@
+package com.pabferir.application;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

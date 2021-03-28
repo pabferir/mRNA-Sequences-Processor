@@ -1,3 +1,5 @@
+package com.pabferir.application;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -55,7 +57,7 @@ public class App {
         }
     }
 
-    public static void runWithInputString(String[] inputContent) {
+    private static void runWithInputString(String[] inputContent) {
         System.out.println("Creating input file with provided data...");
         try {
             File input = new File("./res/geneProc-input.txt");
@@ -89,7 +91,7 @@ public class App {
         }
     }
 
-    public static void runWithInputFile(String pathToFile) {
+    private static void runWithInputFile(String pathToFile) {
         try {
             File refmRNA = new File(pathToFile);
             Scanner fileReader = new Scanner(refmRNA);
@@ -102,7 +104,7 @@ public class App {
         }
     }
 
-    public static void processSequencies(Scanner fileReader, ArrayList<String> geneList) {
+    private static void processSequencies(Scanner fileReader, ArrayList<String> geneList) {
         System.out.println("\n=== Processing mRNA sequences... =====\n");
 
         ArrayList<String> currentGene = new ArrayList<>();
@@ -164,11 +166,11 @@ public class App {
         System.out.println("\n=== Processing completed =============\n");
     }
 
-    public static boolean isStopCodon(String codon) {
+    static boolean isStopCodon(String codon) {
         return (codon.equals("UAG") || codon.equals("UGA") || codon.equals("UAA"));
     }
 
-    public static boolean isNucleotide(String nucleotide) {
+    static boolean isNucleotide(String nucleotide) {
         return (nucleotide.equals("A") || nucleotide.equals("U") || nucleotide.equals("G") || nucleotide.equals("C"));
     }
 }
