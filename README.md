@@ -42,9 +42,9 @@ To run the program specifying an input from command line, use the command:
 ### Run with file input
 To run the program with an input file, place the file in the `res/` directory and use the command:
 ```
-> gradle run --args="-f ./res/name_of_the_file.ext"
+> gradle run --args="-f name_of_the_file.ext"
 ```
-> A sample input file named `refMrna.fa.corrected.txt` is already provided in the `res/` directory.
+> Note `res/` is the only allowed location for placing an input file. A sample input file named `refMrna.fa.corrected.txt` is already provided in the `res/` directory.
 
 ### Output
 Once you run the program either with String or file input, you will find the results in the `geneProc-output.txt` file generated within the `res/` directory.

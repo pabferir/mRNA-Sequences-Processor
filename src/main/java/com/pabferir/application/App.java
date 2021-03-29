@@ -80,19 +80,19 @@ public class App {
     }
 
     /**
-     * Uses an already filled input file as data and starts the processing.
+     * Uses an already filled input file located in the res/ directory as data and starts the processing.
      *
-     * @param pathToFile The relative location in the project of the file which will be used as processing source.
+     * @param fileName The of the file to be used from the res/ directory.
      */
-    static void runWithInputFile(String pathToFile) {
+    static void runWithInputFile(String fileName) {
         try {
-            File refmRNA = new File(pathToFile);
+            File refmRNA = new File("./res/" + fileName);
             Scanner fileReader = new Scanner(refmRNA);
 
             processSequences(fileReader, geneList);
 
         } catch(IOException e) {
-            System.out.println("Unable to load input file form path: " + pathToFile);
+            System.out.println("Unable to load input file form path: ./res/" + fileName);
             e.printStackTrace();
         }
     }
