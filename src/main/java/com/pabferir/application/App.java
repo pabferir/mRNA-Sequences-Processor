@@ -9,10 +9,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Implements an application that
+ * extracts mRNA sequences out of a given input.
+ *
+ * @author  Pablo Ferrando
+ * @version 2.0
+ * @since   2021-02-27
+ */
 public class App {
 
     private static ArrayList<String> geneList = new ArrayList<>();
 
+    /**
+     * Detects the specified processing method and triggers the mRNA sequences processing.
+     * Once the processing is completed, triggers the generation of an output file with the genes obtained as result
+     * of the processing.
+     *
+     * @param args The command line arguments provided by user to perform the processing.
+     */
     public static void main(String[] args) {
         switch(args[0]) {
             case "-f":
@@ -25,39 +40,12 @@ public class App {
         generateOutputFile();
     }
 
-    private static void generateOutputFile() {
-        try {
-            File output = new File("./res/geneProc-output.txt");
-            if (output.createNewFile()) {
-                System.out.println("Output file created: " + output.getName());
-            } else {
-                System.out.println("Output file already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("Could not create output file.");
-            e.printStackTrace();
-        }
-        try {
-            FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            fileWriter.write(gson.toJson(geneList));
-            fileWriter.close();
-            if(geneList.isEmpty()) {
-                System.out.println("\n" +
-                        "*** WARNING *************************************************************\n" +
-                        "* No complete genes detected.                                           *\n" +
-                        "* Make sure your input provided an actual gene ended with a stop codon. *\n" +
-                        "*************************************************************************\n");
-            } else {
-                System.out.println("Successfully wrote to output file.");
-            }
-        } catch (IOException e) {
-            System.out.println("Could not write to output file.");
-            e.printStackTrace();
-        }
-    }
-
-    private static void runWithInputString(String[] inputContent) {
+    /**
+     * Generates an input file with provided data and starts the processing.
+     *
+     * @param inputContent The data to be included in the file which will be used as processing source.
+     */
+    static void runWithInputString(String[] inputContent) {
         System.out.println("Creating input file with provided data...");
         try {
             File input = new File("./res/geneProc-input.txt");
@@ -83,7 +71,7 @@ public class App {
             File refmRNA = new File("./res/geneProc-input.txt");
             Scanner fileReader = new Scanner(refmRNA);
 
-            processSequencies(fileReader, geneList);
+            processSequences(fileReader, geneList);
 
         } catch(IOException e) {
             System.out.println("Unable to load input file form path: ./res/geneProc-input.txt");
@@ -91,12 +79,17 @@ public class App {
         }
     }
 
-    private static void runWithInputFile(String pathToFile) {
+    /**
+     * Uses an already filled input file as data and starts the processing.
+     *
+     * @param pathToFile The relative location in the project of the file which will be used as processing source.
+     */
+    static void runWithInputFile(String pathToFile) {
         try {
             File refmRNA = new File(pathToFile);
             Scanner fileReader = new Scanner(refmRNA);
 
-            processSequencies(fileReader, geneList);
+            processSequences(fileReader, geneList);
 
         } catch(IOException e) {
             System.out.println("Unable to load input file form path: " + pathToFile);
@@ -104,7 +97,13 @@ public class App {
         }
     }
 
-    private static void processSequencies(Scanner fileReader, ArrayList<String> geneList) {
+    /**
+     * Extracts all complete genes out of an input file and stores them as Array in a List.
+     *
+     * @param fileReader The file containing the input data
+     * @param geneList The list where complete genes will be stored
+     */
+    static void processSequences(Scanner fileReader, ArrayList<String> geneList) {
         System.out.println("\n=== Processing mRNA sequences... =====\n");
 
         ArrayList<String> currentGene = new ArrayList<>();
@@ -128,6 +127,7 @@ public class App {
                     try {
                         second = String.valueOf(currentLine.charAt(++i)).toUpperCase();
                         third = String.valueOf(currentLine.charAt(++i)).toUpperCase();
+
                         currentCodon = first.concat(second).concat(third);
                         if (isNucleotide(second) && isNucleotide(third)) {
                             currentGene.add(currentCodon);
@@ -166,10 +166,59 @@ public class App {
         System.out.println("\n=== Processing completed =============\n");
     }
 
+    /**
+     * Generates an output file with all the genes obtained in JSON format as result of the input processing.
+     */
+    private static void generateOutputFile() {
+        try {
+            File output = new File("./res/geneProc-output.txt");
+            if (output.createNewFile()) {
+                System.out.println("Output file created: " + output.getName());
+            } else {
+                System.out.println("Output file already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("Could not create output file.");
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("./res/geneProc-output.txt");
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+            fileWriter.write(gson.toJson(geneList));
+            fileWriter.close();
+            //No genes obtained
+            if(geneList.isEmpty()) {
+                System.out.println("\n" +
+                        "*** WARNING *************************************************************\n" +
+                        "* No complete genes detected.                                           *\n" +
+                        "* Make sure your input provided an actual gene ended with a stop codon. *\n" +
+                        "*************************************************************************\n");
+            } else {
+                System.out.println("Successfully wrote to output file.");
+            }
+        } catch (IOException e) {
+            System.out.println("Could not write to output file.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Determines whether an input string is actually a stop codon.
+     *
+     * @param codon The string which is a possible stop codon
+     * @return true if the item is an actual stop codon, false otherwise.
+     */
     static boolean isStopCodon(String codon) {
         return (codon.equals("UAG") || codon.equals("UGA") || codon.equals("UAA"));
     }
 
+    /**
+     * Determines whether an input item is actually a nucleotide.
+     *
+     * @param nucleotide The item which is a possible nucleotide
+     * @return true if the item is an actual nucleotide, false otherwise.
+     */
     static boolean isNucleotide(String nucleotide) {
         return (nucleotide.equals("A") || nucleotide.equals("U") || nucleotide.equals("G") || nucleotide.equals("C"));
     }
