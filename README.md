@@ -47,7 +47,7 @@ To run the program with an input file, place the file in the `res/` directory an
 > Note `res/` is the only allowed location for placing an input file. A sample input file named `refMrna.fa.corrected.txt` is already provided in the `res/` directory.
 
 ### Output
-Once you run the program either with String or file input, you will find the results in the `geneProc-output.txt` file generated within the `res/` directory.
+Once you run the program either with line or file input, you will find the results in the `geneProc-output.txt` file generated within the `res/` directory.
 
 ## License
 
