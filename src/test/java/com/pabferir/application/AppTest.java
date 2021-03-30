@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class AppTest {
 
     @Test
-    void processSequences_InputIsEmpty_0() {
+    void processSequences_NoInputData_GeneListSizeIs0AndIsEmpty() {
         String data = "";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -25,32 +25,12 @@ public class AppTest {
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
+                () -> Assertions.assertTrue(geneList.isEmpty())
         );
     }
 
     @Test
-    void processSequences_InputContainsDataButNoExpectedCodonsSize_0() {
-        String data = "aaucaauuagu";
-        ArrayList<String> geneList = new ArrayList<>();
-        try {
-            System.setIn(new ByteArrayInputStream(data.getBytes()));
-            Scanner fileReader = new Scanner(System.in);
-            App.processSequences(fileReader, geneList);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
-        );
-    }
-
-    @Test
-    void processSequences_InputContainsCodonsButNoCompleteGenes_0() {
+    void processSequences_ValidDataButNoCompleteGenes_GeneListSizeIs0AndIsEmpty() {
         String data = "aauaauaau";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -63,13 +43,30 @@ public class AppTest {
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
+                () -> Assertions.assertTrue(geneList.isEmpty())
         );
     }
 
     @Test
-    void processSequences_InputContainsOneGeneButInvalidatedByInvalidData_0() {
+    void processSequences_ValidDataButNoCompleteGenesAndNotRespectingCodonSize_GeneListSizeIs0AndIsEmpty() {
+        String data = "aaucaauuagu";
+        ArrayList<String> geneList = new ArrayList<>();
+        try {
+            System.setIn(new ByteArrayInputStream(data.getBytes()));
+            Scanner fileReader = new Scanner(System.in);
+            App.processSequences(fileReader, geneList);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(0, geneList.size()),
+                () -> Assertions.assertTrue(geneList.isEmpty())
+        );
+    }
+
+    @Test
+    void processSequences_NoValidGenesAndInvalidDataInBetweenNotRespectingCodonSize_GeneListSizeIs0AndIsEmpty() {
         String data = "aa > N M1 23 u  u ag uu";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -82,34 +79,15 @@ public class AppTest {
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
+                () -> Assertions.assertTrue(geneList.isEmpty())
         );
     }
 
     @Test
-    void processSequences_InputContainsTwoGenesButInvalidatedByInvalidData_0() {
-        String data = "aa > N M1 23 u u ag aa > N M1 23 u u ag uu";
-        ArrayList<String> geneList = new ArrayList<>();
-        try {
-            System.setIn(new ByteArrayInputStream(data.getBytes()));
-            Scanner fileReader = new Scanner(System.in);
-            App.processSequences(fileReader, geneList);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
-        );
-    }
-
-    @Test
-    void processSequences_InputContainsOneGene_1() {
+    void processSequences_OneCompleteGene_GeneListSizeIs1AndContainsCompleteGene() {
         String data = "aauuag";
         ArrayList<String> geneList = new ArrayList<>();
+
         try {
             System.setIn(new ByteArrayInputStream(data.getBytes()));
             Scanner fileReader = new Scanner(System.in);
@@ -119,14 +97,13 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
                 () -> Assertions.assertEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(0))
         );
     }
 
     @Test
-    void processSequences_InputContainsOneCompleteGeneAndOneIncompleteGene_1() {
+    void processSequences_OneCompleteGeneAndOneIncompleteGene_GeneListSizeIs1AndContainsCompleteGene() {
         String data = "aauuaguuuaaacccggg";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -138,14 +115,13 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
                 () -> Assertions.assertEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(0))
         );
     }
 
     @Test
-    void processSequences_InputContainsOneGeneAndInvalidDataBetweenCodons_1() {
+    void processSequences_OneValidGeneWithInvalidDataInBetween_GeneListSizeIs1AndContainsGene() {
         String data = "a au > N M1 23 u ag uu";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -157,14 +133,13 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
                 () -> Assertions.assertEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(0))
         );
     }
 
     @Test
-    void processSequences_InputContainsOneGeneInvalidatedByInvalidDataAndOneValidGene_1() {
+    void processSequences_OneValidGeneWithDataInvalidatingPreviousValues_GeneListSizeIs1AndContainsGene() {
         String data = "aa > N M1 23 u  u ag uu uag";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -176,14 +151,13 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
                 () -> Assertions.assertEquals(1, geneList.size()),
-                () -> Assertions.assertNotEquals(2, geneList.size())
+                () -> Assertions.assertEquals("[UUA, GUU, UAG]", geneList.get(0))
         );
     }
 
     @Test
-    void processSequences_InputContainsTwoGene_2() {
+    void processSequences_TwoCompleteGenes_GeneListSizeIs2AndContainsBothGenes() {
         String data = "aauuagaauuag";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -195,14 +169,14 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertEquals(2, geneList.size())
+                () -> Assertions.assertEquals(2, geneList.size()),
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(0)),
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(1))
         );
     }
 
     @Test
-    void processSequences_InputContainsTwoCompleteGenesAndOneIncompleteGene_2() {
+    void processSequences_TwoCompleteGenesAndOneIncompleteGene_GeneListSizeIs2AndContainsCompleteGenes() {
         String data = "aauuagaauuaguuuaaacccggg";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -214,14 +188,14 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertEquals(2, geneList.size())
+                () -> Assertions.assertEquals(2, geneList.size()),
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(0)),
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(1))
         );
     }
 
     @Test
-    void processSequences_InputContainsTwoGenesAndInvalidDataBetweenCodons_2() {
+    void processSequences_TwoValidGenesWithInvalidDataInBetween_GeneListSizeIs2AndContainsGenes() {
         String data = "a au > N M1 23 u ag a au > N M1 23 u ag uu";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -233,14 +207,14 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertEquals(2, geneList.size())
+                () -> Assertions.assertEquals(2, geneList.size()),
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(0)),
+                () -> Assertions.assertEquals("[AAU, UAG]", geneList.get(1))
         );
     }
 
     @Test
-    void processSequences_InputContainsOneGeneInvalidatedByInvalidDataAndTwoValidGenes_2() {
+    void processSequences_TwoValidGenesWithDataInvalidatingPreviousValues_GeneListSizeIs2AndContainsGenes() {
         String data = "aa > N M1 23 u  u ag uu uag  u  u ag uu uag";
         ArrayList<String> geneList = new ArrayList<>();
         try {
@@ -252,9 +226,9 @@ public class AppTest {
         }
 
         Assertions.assertAll(
-                () -> Assertions.assertNotEquals(0, geneList.size()),
-                () -> Assertions.assertNotEquals(1, geneList.size()),
-                () -> Assertions.assertEquals(2, geneList.size())
+                () -> Assertions.assertEquals(2, geneList.size()),
+                () -> Assertions.assertEquals("[UUA, GUU, UAG]", geneList.get(0)),
+                () -> Assertions.assertEquals("[UUA, GUU, UAG]", geneList.get(1))
         );
     }
 
@@ -271,7 +245,7 @@ public class AppTest {
     }
 
     @Test
-    void isNucleotide_InvalidNucleotideFormat_False() {
+    void isNucleotide_ValidNucleotideWithInvalidFormat_False() {
         List<String> nucleotides = List.of("a", "c", "g", "u");
 
         Assertions.assertAll(
@@ -308,7 +282,7 @@ public class AppTest {
     }
 
     @Test
-    void isStopCodon_RandomNotStopCodon_False() {
+    void isStopCodon_InvalidRegularCodon_False() {
         List<String> randomCodons = List.of("AUG", "UUG", "GAA", "UAU", "GUG", "CCU", "ACC", "GCA");
 
         Assertions.assertAll(
